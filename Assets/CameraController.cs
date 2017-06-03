@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	IEnumerator TakePhotos(int intervalToPhoto) {
+		Debug.Log("TAKING A PHOTO!");
 		yield return new WaitForSeconds(intervalToPhoto);
 		Application.CaptureScreenshot("./Assets/images/drone-id-image-" + imageIndex + ".png");
 		imageIndex++;
