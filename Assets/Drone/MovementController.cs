@@ -11,7 +11,7 @@ public class MovementController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		MoveDrone();
-		CheckIfWaypointReached();
+		HasReachedWaypoint();
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			Debug.Log("INPOUT HEARD");
 			UpdateWaypoint();
@@ -29,8 +29,8 @@ public class MovementController : MonoBehaviour {
 			targetPosition, DRONE_FLIGHT_SPEED*Time.deltaTime);
 	}
 
-	void CheckIfWaypointReached() {
-
+	void HasReachedWaypoint() {
+		
 	}
 
 	void UpdateWaypoint() {

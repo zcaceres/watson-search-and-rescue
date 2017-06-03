@@ -4,9 +4,23 @@ using UnityEngine;
 
 public class DroneManager : MonoBehaviour {
 	private GameObject waypointManager;
+	private int currentDroneActivated = 0;
+	[SerializeField] private GameObject[] allDrones;
+	private int droneCounter;
 
 	void Awake() {
 		waypointManager = GameObject.Find("WaypointManager");
+		GetAllDrones();
+		droneCounter = allDrones.Length;
+	}
+
+	void GetAllDrones() {
+		GameObject[] drones = new GameObject[11];
+		int counter = 0;
+		foreach (Transform t in transform) {
+			drones[counter++] = t.gameObject;
+		}
+		allDrones = drones;
 	}
 
 	public void EnableDrones() {
@@ -14,10 +28,11 @@ public class DroneManager : MonoBehaviour {
 		foreach (Transform child in transform) {
 			var waypointRow = GetWaypointRow(rowCounter);
 			SetDroneWaypointRow(waypointRow, child);
-			Debug.Log("Enabling Drone: " + child);
 			child.gameObject.SetActive(true);
+			Debug.Log("Enabling Drone: " + child); 
 			rowCounter++;
 		}
+		TakePhotoFromNextDrone();
 	}
 
 	Transform[] GetWaypointRow(int rowCounter) {
@@ -28,16 +43,25 @@ public class DroneManager : MonoBehaviour {
 			waypoints[counter] = waypoint;
 			counter++;
 		}
-		Debug.Log("Current row assigning to drone " + currentRow);
 		return waypoints;
-		// find row prefab in Waypoint Manager
-		// assign every child as queue inside drone (will need property on drone)
-		//
 	}
 
 	void SetDroneWaypointRow(Transform[] waypoints, Transform drone) {
 		drone.GetComponent<MovementController>().SetWaypoints(waypoints);
- 		Debug.Log("Giving drone waypoints " + waypoints + " " + drone);
+	}
+
+	// invoked by current activated drone
+	public void NotifiedThatDroneReady() {
+		TakePhotoFromNextDrone();
+	}
+
+	// tells next drone to take a photo
+	void TakePhotoFromNextDrone() {
+		if (droneCounter >= allDrones.Length) {
+			droneCounter = 0;
+		}
+		var droneCam = allDrones[droneCounter++].GetComponent<CameraController>();
+		droneCam.StartTakingPhotos();
 	}
 
 }
