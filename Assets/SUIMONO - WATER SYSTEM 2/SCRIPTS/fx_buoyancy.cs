@@ -103,7 +103,7 @@ namespace Suimono.Core
 				}}
 			}
 		}
-		
+
 
 
 
@@ -131,13 +131,13 @@ namespace Suimono.Core
 			//check activations
 			performHeight = true;
 			if (physTarget != null && moduleObject.setCamera != null){
-			
+
 				//check for range activation
 				currRange = Vector3.Distance(moduleObject.setCamera.transform.position, physTarget.transform.position);
 				if (currRange >= activationRange){
 					performHeight = false;
 				}
-				
+
 				//check for frustrum activation
 				camRange = 0.2f;
 				if (moduleObject != null){
@@ -156,7 +156,7 @@ namespace Suimono.Core
 					performHeight = false;
 				}
 			}
-			
+
 
 			//perform height check
 			if (performHeight){
@@ -171,14 +171,14 @@ namespace Suimono.Core
 
 			//clamp variables
 			forceHeightFactor = Mathf.Clamp01(forceHeightFactor);
-			
+
 			//Reset values
 			isUnderwater = false;
 			underwaterLevel = 0f;
 
 			//calculate scaling
 			testObjectHeight = (transform.position.y+buoyancyOffset-0.5f);
-			
+
 				waveHeight = surfaceLevel;
 				if (testObjectHeight < waveHeight){
 					isUnderwater = true;
@@ -191,7 +191,7 @@ namespace Suimono.Core
 
 			if (!keepAtSurface && engageBuoyancy && isOver == 1f){
 			if (rigidbodyComponent && !rigidbodyComponent.isKinematic){
-					
+
 					//reset rigidbody if turned off
 					if (rigidbodyComponent.isKinematic){
 						rigidbodyComponent.isKinematic = saveRigidbodyState;
@@ -202,16 +202,16 @@ namespace Suimono.Core
 					if (isUnderwater){
 
 						if (this.transform.position.y+buoyancyOffset-0.5f < waveHeight-surfaceRange){
-							
+
 							// add vertical force to buoyancy while underwater
 							forceMod = (buoyancyFactor * (buoyancy * rigidbodyComponent.mass) * (underwaterLevel) * splitFac * (isUnderwater ? 1f : 0f) );
 							if (rigidbodyComponent.velocity.y < maxVerticalSpeed){
 								rigidbodyComponent.AddForceAtPosition(new Vector3(0f,1f,0f) * forceMod, transform.position);
 							}
 							modTime = 0f;
-							
+
 						} else {
-							
+
 							// slow down vertical velocity as it reaches water surface or wave zenith
 							modTime = (this.transform.position.y+buoyancyOffset-0.5f) / (waveHeight+buyRand.Next(0f,0.25f) * (isUnderwater ? 1f : 0f));
 							if (rigidbodyComponent.velocity.y > 0f){
@@ -221,8 +221,8 @@ namespace Suimono.Core
 									rigidbodyComponent.velocity.z);
 							}
 						}
-					
-					
+
+
 						//Add Water Force / Direction to Buoyancy Object
 						if (inheritForce){
 						if (this.transform.position.y+buoyancyOffset-0.5f <= waveHeight){
@@ -233,7 +233,7 @@ namespace Suimono.Core
 						}
 
 					}
-					
+
 			}
 			}
 
@@ -276,7 +276,7 @@ namespace Suimono.Core
 				}
 
 			}
-			
+
 		}
 		}
 

@@ -6,30 +6,52 @@ public class CameraController : MonoBehaviour {
 	Camera myCamera;
 	bool isWaitingForCamera;
 	int imageIndex = 0;
-	// Use this for initialization
-	void OnActive() {
-		myCamera = GetComponent<Camera>();
+	public int droneId;
+	private DroneManager droneManager;
+	private int INTERVAL_TO_TAKE_PHOTO = 1;
+
+	void Awake() {
+		droneManager = GameObject.Find("DroneManager").GetComponent<DroneManager>();
+		myCamera = transform.Find("DroneCam").GetComponent<Camera>();
 	}
 
-	void Start () {
-
+	public void StartTakingPhotos() {
+		StartCoroutine("TakePhotos", INTERVAL_TO_TAKE_PHOTO);
 	}
 
 	IEnumerator TakePhotos(int intervalToPhoto) {
-		Debug.Log("TAKING A PHOTO!");
+		TurnOnCamera();
+		// UPDATE UI
 		yield return new WaitForSeconds(intervalToPhoto);
-		Application.CaptureScreenshot("./Assets/images/drone-id-image-" + imageIndex + ".png");
+		Debug.Log("Capturing screenshot on drone " + droneId);
+		Application.CaptureScreenshot("./Assets/images/drone-" + droneId + "-image-" + imageIndex + ".png");
 		imageIndex++;
 		yield return new WaitForSeconds(1);
+		TurnOffCamera();
+		NotifyDroneManagerThatDroneReady();
 		isWaitingForCamera = false;
 	}
 
+	void TurnOffCamera() {
+		Debug.Log("TURNING OFF CAMERA");
+		myCamera.enabled = false;
+	}
 
-	// Update is called once per frame
+	void TurnOnCamera() {
+		Debug.Log("TURNING ON CAMERA");
+		myCamera.enabled = true;
+	}
+
+	void NotifyDroneManagerThatDroneReady() {
+		Debug.Log("NOTIFYING DRONE MANAGER THAT IM READY");
+		droneManager.NotifiedThatDroneReady();
+	}
+
+
 	void Update () {
 		if (!isWaitingForCamera) {
 			isWaitingForCamera = true;
-			StartCoroutine("TakePhotos", 5);
+			// StartCoroutine("TakePhotos", 5);
 		}
 	}
 }
