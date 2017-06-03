@@ -29,8 +29,13 @@ public class MovementController : MonoBehaviour {
 			targetPosition, DRONE_FLIGHT_SPEED*Time.deltaTime);
 	}
 
+	// Called from CameraController after Photo to advance drone
+	public void AdvanceDrone() {
+		UpdateWaypoint();
+	}
+
 	void HasReachedWaypoint() {
-		
+
 	}
 
 	void UpdateWaypoint() {

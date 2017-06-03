@@ -55,13 +55,13 @@ public class DroneManager : MonoBehaviour {
 		TakePhotoFromNextDrone();
 	}
 
-	// tells next drone to take a photo
+	// goes down drone row and takes a photo
 	void TakePhotoFromNextDrone() {
 		if (droneCounter >= allDrones.Length) {
 			droneCounter = 0;
 		}
-		var droneCam = allDrones[droneCounter++].GetComponent<CameraController>();
-		droneCam.StartTakingPhotos();
+		var drone = allDrones[droneCounter++].GetComponent<CameraController>();
+		drone.StartTakingPhotos();
 	}
 
 }
