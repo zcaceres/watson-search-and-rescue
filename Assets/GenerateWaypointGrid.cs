@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GenerateWaypointGrid : MonoBehaviour {
 	private DroneManager droneManager;
+	public GameObject rowPrefab;
 	public GameObject waypointPrefab;
 	int WAYPOINT_HEIGHT_Y_VALUE = 100;
 
@@ -14,8 +15,10 @@ public class GenerateWaypointGrid : MonoBehaviour {
 	}
 
 	void GenerateGrid () {
+		int rowCounter = 0;
 		for (var z = 0; z <= 1000; z+= 100) {
-			GenerateRow(z);
+			GenerateRow(z, rowCounter);
+			rowCounter++;
 		}
 		Debug.Log("Waypoint Grid Generated");
 	}
@@ -25,15 +28,22 @@ public class GenerateWaypointGrid : MonoBehaviour {
 		droneManager.EnableDrones();
 	}
 
-	void GenerateRow (int zCoord) {
+	void GenerateRow (int zCoord, int rowCounter) {
+		var row = CreateRowPrefab(rowCounter);
 		for (var x = 0; x <= 1000; x += 100) {
-			PlaceWaypoint(x, zCoord);
+			PlaceWaypoint(x, zCoord, row);
 		}
 	}
 
-	void PlaceWaypoint(int xCoord, int zCoord) {
+	GameObject CreateRowPrefab(int rowCounter) {
+		var row = Instantiate(rowPrefab, this.transform);
+		row.name = "row-" + rowCounter;
+		return row;
+	}
+
+	void PlaceWaypoint(int xCoord, int zCoord, GameObject row) {
 		Vector3 gridPosition = new Vector3 (xCoord, WAYPOINT_HEIGHT_Y_VALUE, zCoord);
-		Instantiate(waypointPrefab, gridPosition, Quaternion.identity, this.transform);
+		Instantiate(waypointPrefab, gridPosition, Quaternion.identity, row.transform);
 	}
 
 }

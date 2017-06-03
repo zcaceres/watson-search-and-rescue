@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour {
-	public Transform myWaypoint;
+	public Transform currentWaypoint;
 	float DRONE_FLIGHT_SPEED = 0.1f;
 
 	// Update is called once per frame
@@ -12,9 +12,9 @@ public class MovementController : MonoBehaviour {
 	}
 
 	void MoveDrone() {
-	var targetPosition = myWaypoint.position;
-	this.transform.position = Vector3.Slerp(this.transform.position,
-		targetPosition, DRONE_FLIGHT_SPEED*Time.deltaTime);
+		var targetPosition = currentWaypoint.position;
+		this.transform.position = Vector3.Slerp(this.transform.position,
+			targetPosition, DRONE_FLIGHT_SPEED*Time.deltaTime);
 	}
 
 	void CheckIfWaypointReached() {
@@ -23,7 +23,7 @@ public class MovementController : MonoBehaviour {
 	}
 
 	void UpdateWaypoint() {
-		
+
 	}
 
 }
