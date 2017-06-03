@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class CameraController : MonoBehaviour {
 	Camera myCamera;
@@ -11,11 +12,13 @@ public class CameraController : MonoBehaviour {
 	private int INTERVAL_TO_TAKE_PHOTO = 1;
 	private int photosTaken =  0;
 	private MovementController movementController;
+	private HTTPManager httpManager;
 
 	void Awake() {
 		droneManager = GameObject.Find("DroneManager").GetComponent<DroneManager>();
 		myCamera = transform.Find("DroneCam").GetComponent<Camera>();
 		movementController = GetComponent<MovementController>();
+		httpManager = GameObject.Find("HTTPManager").GetComponent<HTTPManager>();
 	}
 
 	public void StartTakingPhotos() {
@@ -26,16 +29,19 @@ public class CameraController : MonoBehaviour {
 		TurnOnCamera();
 		// UPDATE UI
 		yield return new WaitForSeconds(intervalToPhoto);
-		Debug.Log("Capturing screenshot on drone " + droneId);
-		Application.CaptureScreenshot("./Assets/images/drone-" + droneId +
+		var fileName = "./Assets/images/drone-" + droneId +
 			"-image-" + imageIndex + "-" +
 			(int)transform.position.x + "-" +
-			(int)transform.position.z + ".png");
+			(int)transform.position.z + ".png";
+
+		Application.CaptureScreenshot(fileName);
 		imageIndex++;
 		yield return new WaitForSeconds(1);
+		var newFile = RetrieveScreenshotFile(fileName);
 		TurnOffCamera();
 		NotifyDroneManagerThatDroneReady();
 		isWaitingForCamera = false;
+		httpManager.SendPhotoToServer(newFile, fileName);
 		if (photosTaken <= 10) {
 			movementController.AdvanceDrone();
 			photosTaken++;
@@ -43,6 +49,11 @@ public class CameraController : MonoBehaviour {
 		} else {
 			Debug.Log("ALL PHOTOS TAKEN");
 		}
+	}
+
+	byte[] RetrieveScreenshotFile(string fileName) {
+		byte[] bytes = File.ReadAllBytes(fileName);
+		return bytes;
 	}
 
 	void TurnOffCamera() {
