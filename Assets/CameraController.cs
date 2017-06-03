@@ -9,10 +9,13 @@ public class CameraController : MonoBehaviour {
 	public int droneId;
 	private DroneManager droneManager;
 	private int INTERVAL_TO_TAKE_PHOTO = 1;
+	private int photosTaken =  0;
+	private MovementController movementController;
 
 	void Awake() {
 		droneManager = GameObject.Find("DroneManager").GetComponent<DroneManager>();
 		myCamera = transform.Find("DroneCam").GetComponent<Camera>();
+		movementController = GetComponent<MovementController>();
 	}
 
 	public void StartTakingPhotos() {
@@ -24,12 +27,22 @@ public class CameraController : MonoBehaviour {
 		// UPDATE UI
 		yield return new WaitForSeconds(intervalToPhoto);
 		Debug.Log("Capturing screenshot on drone " + droneId);
-		Application.CaptureScreenshot("./Assets/images/drone-" + droneId + "-image-" + imageIndex + ".png");
+		Application.CaptureScreenshot("./Assets/images/drone-" + droneId +
+			"-image-" + imageIndex + "-" +
+			(int)transform.position.x + "-" +
+			(int)transform.position.z + ".png");
 		imageIndex++;
 		yield return new WaitForSeconds(1);
 		TurnOffCamera();
 		NotifyDroneManagerThatDroneReady();
 		isWaitingForCamera = false;
+		if (photosTaken <= 10) {
+			movementController.AdvanceDrone();
+			photosTaken++;
+			Debug.Log("PHOTOS TAKEN FOR DRONE " + droneId + " are " + photosTaken);
+		} else {
+			Debug.Log("ALL PHOTOS TAKEN");
+		}
 	}
 
 	void TurnOffCamera() {
@@ -46,7 +59,6 @@ public class CameraController : MonoBehaviour {
 		Debug.Log("NOTIFYING DRONE MANAGER THAT IM READY");
 		droneManager.NotifiedThatDroneReady();
 	}
-
 
 	void Update () {
 		if (!isWaitingForCamera) {
