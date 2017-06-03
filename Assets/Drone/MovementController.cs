@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour {
-	// Use this for initialization
+	public Transform myWaypoint;
+	float DRONE_FLIGHT_SPEED = 0.1f;
 	void Start () {
 
 	}
 
 	// Update is called once per frame
 	void Update () {
-		var newPosition = transform.position;
-		newPosition.x += 1.0f;
-		transform.position = newPosition;
+		MoveDrone();
 	}
+
+	void MoveDrone() {
+	var targetPosition = myWaypoint.position;
+	this.transform.position = Vector3.Slerp(this.transform.position,
+		targetPosition, DRONE_FLIGHT_SPEED*Time.deltaTime);
+	}
+
 }
