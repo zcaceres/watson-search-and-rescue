@@ -6,7 +6,7 @@ public class GenerateWaypointGrid : MonoBehaviour {
 	private DroneManager droneManager;
 	public GameObject rowPrefab;
 	public GameObject waypointPrefab;
-	int WAYPOINT_HEIGHT_Y_VALUE = 100;
+	int WAYPOINT_HEIGHT_Y_VALUE = 50;
 
 	void Awake() {
 		droneManager = GameObject.Find("DroneManager").GetComponent<DroneManager>();
