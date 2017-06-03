@@ -27,7 +27,10 @@ public class CameraController : MonoBehaviour {
 		// UPDATE UI
 		yield return new WaitForSeconds(intervalToPhoto);
 		Debug.Log("Capturing screenshot on drone " + droneId);
-		Application.CaptureScreenshot("./Assets/images/drone-" + droneId + "-image-" + imageIndex + ".png");
+		Application.CaptureScreenshot("./Assets/images/drone-" + droneId +
+			"-image-" + imageIndex + "-" +
+			(int)transform.position.x + "-" +
+			(int)transform.position.z + ".png");
 		imageIndex++;
 		yield return new WaitForSeconds(1);
 		TurnOffCamera();
