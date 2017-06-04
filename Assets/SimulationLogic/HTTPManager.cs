@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HTTPManager : MonoBehaviour {
-	string serverURL = "http://30b26fbb.ngrok.io/fileupload";
+	string serverURL = "http://029d22ac.ngrok.io/fileupload"; // "http://9547c042.ngrok.io/fileupload";
 
 	public void SendPhotoToServer(byte[] screenShot, string fileName) {
 		var coroutine = UploadPNG(screenShot, fileName);
@@ -15,8 +15,6 @@ public class HTTPManager : MonoBehaviour {
 		serverForm.AddBinaryData("fileUpload", screenshot, fileName, "image/png");
 
 		WWW w = new WWW(serverURL, serverForm);
-		Debug.Log(w);
-		Debug.Log(serverForm);
 		yield return w;
 		if (!PropertyName.IsNullOrEmpty(w.error)) {
 			Debug.Log(w.error);
