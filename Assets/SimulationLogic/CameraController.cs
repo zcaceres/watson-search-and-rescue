@@ -30,8 +30,8 @@ public class CameraController : MonoBehaviour {
 		// UPDATE UI
 		yield return new WaitForSeconds(intervalToPhoto);
 		var fileName = "./Assets/images/drone-" + droneId +
-			"-image-" + imageIndex + ".png";
-		var coordinates = (int)transform.position.x + "-" + (int)transform.position.z;
+			"-image-" + imageIndex + "_" + (int)transform.position.x + "_" +
+			(int)transform.position.z + "_.png";
 
 		Application.CaptureScreenshot(fileName);
 		imageIndex++;
@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour {
 		TurnOffCamera();
 		NotifyDroneManagerThatDroneReady();
 		isWaitingForCamera = false;
-		httpManager.SendPhotoToServer(newFile, fileName, coordinates);
+		httpManager.SendPhotoToServer(newFile, fileName);
 		if (photosTaken <= 10) {
 			movementController.AdvanceDrone();
 			photosTaken++;
