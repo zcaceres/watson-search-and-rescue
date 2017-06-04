@@ -14,3 +14,5 @@ Built with:
 - Node.js
 - Express.js
 - React
+
+The serverUrl ngrok address in the Assets/SimulationLogic/HTTPManager.cs file needs to match the ngrok address that is serving the Dashboard app.
