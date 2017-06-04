@@ -12,10 +12,6 @@ public class MovementController : MonoBehaviour {
 	void Update () {
 		MoveDrone();
 		HasReachedWaypoint();
-		if (Input.GetKeyDown(KeyCode.Space)) {
-			Debug.Log("INPOUT HEARD");
-			UpdateWaypoint();
-		}
 	}
 
 	public void SetWaypoints(Transform[] waypoints) {

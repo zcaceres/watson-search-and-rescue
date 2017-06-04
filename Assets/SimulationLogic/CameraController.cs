@@ -39,7 +39,6 @@ public class CameraController : MonoBehaviour {
 		var newFile = RetrieveScreenshotFile(fileName);
 		TurnOffCamera();
 		NotifyDroneManagerThatDroneReady();
-		isWaitingForCamera = false;
 		httpManager.SendPhotoToServer(newFile, fileName);
 		if (photosTaken <= 10) {
 			movementController.AdvanceDrone();
@@ -70,10 +69,4 @@ public class CameraController : MonoBehaviour {
 		droneManager.NotifiedThatDroneReady();
 	}
 
-	void Update () {
-		if (!isWaitingForCamera) {
-			isWaitingForCamera = true;
-			// StartCoroutine("TakePhotos", 5);
-		}
-	}
 }
