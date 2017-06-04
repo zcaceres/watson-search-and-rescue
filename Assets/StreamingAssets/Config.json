@@ -1,0 +1,16 @@
+{
+    "m_ClassifierDirectory": "Watson/Scripts/Editor/Classifiers/",
+    "m_TimeOut": 30.0,
+    "m_MaxRestConnections": 5,
+    "m_Credentials": [
+        {
+            "m_ServiceID": "VisualRecognitionV3",
+            "m_URL": "https://gateway-a.watsonplatform.net/visual-recognition/api",
+            "m_User": null,
+            "m_Password": null,
+            "m_Apikey": "cebb33a6e7701a6a0c37d4586a72750e4dc68257",
+            "m_Note": "It may take up to 5 minutes for this key to become active"
+        }
+    ],
+    "m_Variables": []
+}
