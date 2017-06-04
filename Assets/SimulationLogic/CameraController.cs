@@ -30,9 +30,8 @@ public class CameraController : MonoBehaviour {
 		// UPDATE UI
 		yield return new WaitForSeconds(intervalToPhoto);
 		var fileName = "./Assets/images/drone-" + droneId +
-			"-image-" + imageIndex + "-" +
-			(int)transform.position.x + "-" +
-			(int)transform.position.z + ".png";
+			"-image-" + imageIndex + "_" + (int)transform.position.x + "_" +
+			(int)transform.position.z + "_.png";
 
 		Application.CaptureScreenshot(fileName);
 		imageIndex++;
